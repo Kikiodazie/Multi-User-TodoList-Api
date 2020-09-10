@@ -1,18 +1,20 @@
 package com.odazie.todolistapi.data.entity;
 
-import com.odazie.todolistapi.business.model.AuditModel;
 import com.odazie.todolistapi.business.model.LabelColour;
 import com.odazie.todolistapi.business.model.TodoStatus;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "todo")
-public class Todo extends AuditModel {
+public class Todo{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +35,16 @@ public class Todo extends AuditModel {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private TodoStatus todoStatus;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+    @Column(name = "created_at")
+    private Date createdAt = new Date();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private Date updatedAt = new Date();
 
 // Many to one between a user and todos
     @ManyToOne(fetch = FetchType.LAZY)
@@ -146,6 +158,22 @@ public class Todo extends AuditModel {
 
     public User getUser() {
         return user;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updated) {
+        this.updatedAt = updated;
     }
 
     public void setUser(User user) {

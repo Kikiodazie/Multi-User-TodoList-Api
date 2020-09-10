@@ -1,9 +1,6 @@
 package com.odazie.todolistapi.data.entity;
 
 
-import com.odazie.todolistapi.business.model.AuditModel;
-
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -21,22 +18,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @NotNull
-    @Size(max = 65)
-    @Column(name = "first_name")
-    private String firstName;
-
-
-    @Size(max = 65)
-    @Column(name = "last_name")
-    private String lastName;
-
 
     @NotNull
     @Email
     @Size(max = 100)
     @Column(name = "email", unique = true)
     private String email;
+
+    @NotNull
+    @Size(max = 100)
+    @Column(name = "password")
+    private String password;
+
 
     @OneToMany(
             mappedBy = "user",
@@ -65,20 +58,12 @@ public class User {
         this.userId = userId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getPassword() {
+        return password;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
@@ -87,5 +72,9 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Todo> getTodoList() {
+        return todoList;
     }
 }
