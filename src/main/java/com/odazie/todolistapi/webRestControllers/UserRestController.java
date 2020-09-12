@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-public class UserRest {
+public class UserRestController {
 
     private final UserService userService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
-    public UserRest(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserRestController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }

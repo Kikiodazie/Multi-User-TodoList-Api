@@ -23,15 +23,19 @@ public class TodoService {
         todo.setLabelColour(newTodoData.getLabelColour());
     }
 
-    public void deleteTodo(Todo todo){
+    public void deleteTodo(Todo todo, User currentUser){
+        currentUser.deleteTodo(todo);
         getTodoRepository().delete(todo);
+
     }
 
     public Todo getTodoByUserAndId(User user, Long todoId){
         return getTodoRepository().findByUserAndTodoId(user, todoId);
     }
 
-    public void addTodo(Todo todo){
+    public void addTodo(Todo todo, User currentUser){
+        todo.setUser(currentUser);
+        currentUser.addTodo(todo);
         getTodoRepository().save(todo);
     }
 

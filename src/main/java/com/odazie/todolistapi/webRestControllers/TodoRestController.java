@@ -13,12 +13,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class TodoRest {
+public class TodoRestController {
 
     private final TodoService todoservice;
     private final UserService userService;
 
-    public TodoRest(TodoService todoservice, UserService userService) {
+    public TodoRestController(TodoService todoservice, UserService userService) {
         this.todoservice = todoservice;
         this.userService = userService;
     }
@@ -33,9 +33,7 @@ public class TodoRest {
     @PostMapping("/todos")
     public ResponseEntity<Void> createTodo(@RequestBody Todo todo, Authentication authentication){
         User currentUser = userService.findUserByEmail(authentication.getName());
-        todo.setUser(currentUser);
-        todoservice.addTodo(todo);
-        currentUser.addTodo(todo);
+        todoservice.addTodo(todo, currentUser);
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
@@ -61,8 +59,7 @@ public class TodoRest {
         }
 
         todoservice.updateUserTodo(todo, newTodoData);
-        todoservice.addTodo(todo);
-
+        todoservice.addTodo(todo,currentUser);
         return new ResponseEntity<Todo>(todo,HttpStatus.OK);
     }
 
@@ -72,7 +69,7 @@ public class TodoRest {
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoservice.getTodoByUserAndId(currentUser, todoId);
 
-        todoservice.deleteTodo(todo);
+        todoservice.deleteTodo(todo,currentUser);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

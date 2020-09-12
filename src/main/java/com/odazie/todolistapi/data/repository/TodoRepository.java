@@ -1,6 +1,7 @@
 package com.odazie.todolistapi.data.repository;
 
 import com.odazie.todolistapi.data.entity.Todo;
+import com.odazie.todolistapi.data.entity.TodoItem;
 import com.odazie.todolistapi.data.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

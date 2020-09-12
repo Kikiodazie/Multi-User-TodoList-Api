@@ -1,5 +1,7 @@
 package com.odazie.todolistapi.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -17,6 +19,7 @@ public class TodoItem {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Todo todo;
 
 
