@@ -1,6 +1,8 @@
 package com.odazie.todolistapi.data.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -22,12 +24,12 @@ public class User {
     @NotNull
     @Email
     @Size(max = 100)
-    @Column(name = "email", unique = true)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @NotNull
     @Size(max = 100)
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
 
@@ -36,9 +38,10 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private final List<Todo> todoList = new ArrayList<>();
 
-    public void createTodo(Todo todo){
+    public void addTodo(Todo todo){
         todoList.add(todo);
         todo.setUser(this);
     }

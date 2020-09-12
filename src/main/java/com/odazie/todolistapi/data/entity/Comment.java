@@ -1,5 +1,7 @@
 package com.odazie.todolistapi.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.odazie.todolistapi.business.model.AuditModel;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -10,7 +12,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "comment")
-public class Comment {
+public class Comment extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,19 +23,8 @@ public class Comment {
     private String commentText;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Todo todo;
-
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    @Column(name = "created_at")
-    private Date createdAt = new Date();
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private Date updatedAt = new Date();
-
 
 
     @Override

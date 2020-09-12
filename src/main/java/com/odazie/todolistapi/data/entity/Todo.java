@@ -1,20 +1,18 @@
 package com.odazie.todolistapi.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.odazie.todolistapi.business.model.AuditModel;
 import com.odazie.todolistapi.business.model.LabelColour;
-import com.odazie.todolistapi.business.model.TodoStatus;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "todo")
-public class Todo{
+public class Todo extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +20,9 @@ public class Todo{
 
     @NotNull
     @Size(max = 100)
-    @Column(name = "todo_title", unique = true)
+    @Column(name = "todo_title", nullable = false)
     private String title;
+
 
     @Column(name = "description",columnDefinition = "TEXT")
     private String description;
@@ -32,22 +31,14 @@ public class Todo{
     @Column(name = "label_colour")
     private LabelColour labelColour;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private TodoStatus todoStatus;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    @Column(name = "created_at")
-    private Date createdAt = new Date();
+    @Column(name = "is_done")
+    private boolean isDone;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private Date updatedAt = new Date();
 
 // Many to one between a user and todos
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private User user;
 
 
@@ -58,6 +49,7 @@ public class Todo{
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private final List<TodoItem> todoItems = new ArrayList<>();
 
     public void addItem(TodoItem todoItem){
@@ -80,6 +72,7 @@ public class Todo{
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private final List<Comment> comments = new ArrayList<>();
 
     public void addComment(Comment comment){
@@ -148,32 +141,16 @@ public class Todo{
         this.labelColour = labelColour;
     }
 
-    public TodoStatus getTodoStatus() {
-        return todoStatus;
+    public boolean isDone() {
+        return isDone;
     }
 
-    public void setTodoStatus(TodoStatus todoStatus) {
-        this.todoStatus = todoStatus;
+    public void setDone(boolean done) {
+        isDone = done;
     }
 
     public User getUser() {
         return user;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updated) {
-        this.updatedAt = updated;
     }
 
     public void setUser(User user) {
