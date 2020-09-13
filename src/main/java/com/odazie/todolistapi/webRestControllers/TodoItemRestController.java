@@ -34,7 +34,7 @@ public class TodoItemRestController {
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
 
-        if(!todoService.getTodoRepository().existsById(todoId)){
+        if(!todoService.getTodoRepository().existsByUserAndTodoId(currentUser,todoId)){
             throw new ResourceNotFoundException("Todo with + " + todoId + "not found");
         }
         return new ResponseEntity<>(todoItemService
@@ -72,7 +72,7 @@ public class TodoItemRestController {
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
         TodoItem item = todoItemService.getItemByTodoAndItemId(todo, itemId);
 
-        if (!todoItemService.getTodoItemRepository().existsById(itemId)){
+        if (!todoItemService.getTodoItemRepository().existsByTodoAndItemId(todo,itemId)){
             return new ResponseEntity<>(item, HttpStatus.NOT_FOUND);
         }
 

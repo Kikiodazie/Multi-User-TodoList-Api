@@ -54,7 +54,7 @@ public class TodoRestController {
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoservice.getTodoByUserAndId(currentUser, todoId);
 
-        if(!todoservice.getTodoRepository().existsById(todoId)){
+        if(!todoservice.getTodoRepository().existsByUserAndTodoId(currentUser,todoId)){
             throw new ResourceNotFoundException("Todo with + " + todoId + "not found");
         }
 
