@@ -38,8 +38,7 @@ public class TodoItemRestController {
             throw new ResourceNotFoundException("Todo with + " + todoId + "not found");
         }
         return new ResponseEntity<>(todoItemService
-                .getTodoItemRepository()
-                .findTodoItemsByTodo(todo,pageable), HttpStatus.OK);
+                .getAllTodoItems(todo, pageable), HttpStatus.OK);
     }
 
 

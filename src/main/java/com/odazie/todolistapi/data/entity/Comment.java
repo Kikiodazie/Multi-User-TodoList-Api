@@ -2,12 +2,9 @@ package com.odazie.todolistapi.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.odazie.todolistapi.business.model.AuditModel;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 
 @Entity
