@@ -32,7 +32,7 @@ public class TodoRestController {
 
     @GetMapping("/todos")
     public ResponseEntity<Page<Todo>> getAllTodosByUser(Authentication authentication, Pageable pageable, HttpServletRequest request){
-        if(blacklistService.getBlacklistRepository().findByToken(JWTAuthorizationFilter.getToken(request)) != null){
+        if(blacklistService.blacklistCheck(request) != null){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
@@ -41,14 +41,21 @@ public class TodoRestController {
     }
 
     @PostMapping("/todos")
-    public ResponseEntity<Void> createTodo(@RequestBody Todo todo, Authentication authentication){
+    public ResponseEntity<Void> createTodo(@RequestBody Todo todo, Authentication authentication, HttpServletRequest request){
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
         User currentUser = userService.findUserByEmail(authentication.getName());
         todoservice.addTodo(todo, currentUser);
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
     @GetMapping("/todos/{todoId}")
-    public ResponseEntity<Todo> getUserTodoById(@PathVariable("todoId") Long todoId, Authentication authentication){
+    public ResponseEntity<Todo> getUserTodoById(@PathVariable("todoId") Long todoId, Authentication authentication , HttpServletRequest request){
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         User currentUser = userService.findUserByEmail(authentication.getName());
 
         Todo todo = todoservice.getTodoByUserAndId(currentUser, todoId);
@@ -60,7 +67,10 @@ public class TodoRestController {
     }
 
     @PutMapping("/todos/{todoId}")
-    public ResponseEntity<Todo> updateUserTodo(@PathVariable Long todoId, @RequestBody Todo newTodoData, Authentication authentication) throws ResourceNotFoundException {
+    public ResponseEntity<Todo> updateUserTodo(@PathVariable Long todoId, @RequestBody Todo newTodoData, Authentication authentication, HttpServletRequest request) throws ResourceNotFoundException {
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoservice.getTodoByUserAndId(currentUser, todoId);
 
@@ -75,7 +85,10 @@ public class TodoRestController {
 
 
     @DeleteMapping("todos/{todoId}")
-    public  ResponseEntity<Void> deleteUserTodo(@PathVariable Long todoId, Authentication authentication){
+    public  ResponseEntity<Void> deleteUserTodo(@PathVariable Long todoId, Authentication authentication, HttpServletRequest request){
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoservice.getTodoByUserAndId(currentUser, todoId);
 

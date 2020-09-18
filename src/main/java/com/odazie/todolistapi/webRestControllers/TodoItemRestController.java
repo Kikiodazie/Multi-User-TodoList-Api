@@ -2,6 +2,7 @@ package com.odazie.todolistapi.webRestControllers;
 
 import com.odazie.todolistapi.business.service.TodoItemService;
 import com.odazie.todolistapi.business.service.TodoService;
+import com.odazie.todolistapi.business.service.TokenBlacklistService;
 import com.odazie.todolistapi.business.service.UserService;
 import com.odazie.todolistapi.data.entity.Todo;
 import com.odazie.todolistapi.data.entity.TodoItem;
@@ -14,23 +15,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class TodoItemRestController {
 
     private final TodoItemService todoItemService;
     private final UserService userService;
     private final TodoService todoService;
+    private final TokenBlacklistService blacklistService;
 
 
 
-    public TodoItemRestController(TodoItemService todoItemService, UserService userService, TodoService todoService) {
+    public TodoItemRestController(TodoItemService todoItemService, UserService userService, TodoService todoService, TokenBlacklistService blacklistService) {
         this.todoItemService = todoItemService;
         this.userService = userService;
         this.todoService = todoService;
+        this.blacklistService = blacklistService;
     }
 
     @GetMapping("todos/{todoId}/items")
-    public ResponseEntity<Page<TodoItem>> getAllTodoItems(@PathVariable Long todoId, Pageable pageable, Authentication authentication) throws ResourceNotFoundException {
+    public ResponseEntity<Page<TodoItem>> getAllTodoItems(@PathVariable Long todoId, Pageable pageable, Authentication authentication, HttpServletRequest request) throws ResourceNotFoundException {
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
 
@@ -43,7 +51,10 @@ public class TodoItemRestController {
 
 
     @PostMapping("todos/{todoId}/items")
-    public ResponseEntity<Void> createTodoItem(@RequestBody TodoItem todoItem, Authentication authentication, @PathVariable Long todoId){
+    public ResponseEntity<Void> createTodoItem(@RequestBody TodoItem todoItem, Authentication authentication, @PathVariable Long todoId, HttpServletRequest request){
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         User currentUser = userService.findUserByEmail(authentication.getName());
 
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
@@ -53,7 +64,10 @@ public class TodoItemRestController {
 
 
     @GetMapping("todos/{todoId}/items/{itemId}")
-    public ResponseEntity<TodoItem> getTodoItemById(@PathVariable Long todoId, @PathVariable Long itemId, Authentication authentication){
+    public ResponseEntity<TodoItem> getTodoItemById(@PathVariable Long todoId, @PathVariable Long itemId, Authentication authentication, HttpServletRequest request){
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
 
@@ -66,7 +80,10 @@ public class TodoItemRestController {
 
 
     @PutMapping("todos/{todoId}/items/{itemId}")
-    public ResponseEntity<TodoItem> updateTodoItem(@RequestBody TodoItem newTodoId, @PathVariable Long todoId, @PathVariable Long itemId, Authentication authentication){
+    public ResponseEntity<TodoItem> updateTodoItem(@RequestBody TodoItem newTodoId, @PathVariable Long todoId, @PathVariable Long itemId, Authentication authentication, HttpServletRequest request){
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
         TodoItem item = todoItemService.getItemByTodoAndItemId(todo, itemId);
@@ -82,7 +99,10 @@ public class TodoItemRestController {
     }
 
     @DeleteMapping("todos/{todoId}/items/{itemId}")
-    public ResponseEntity<Void> deleteTodoItem(@PathVariable Long todoId, @PathVariable Long itemId, Authentication authentication){
+    public ResponseEntity<Void> deleteTodoItem(@PathVariable Long todoId, @PathVariable Long itemId, Authentication authentication, HttpServletRequest request){
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
         TodoItem item = todoItemService.getItemByTodoAndItemId(todo, itemId);

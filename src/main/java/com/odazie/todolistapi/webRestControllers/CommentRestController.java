@@ -3,6 +3,7 @@ package com.odazie.todolistapi.webRestControllers;
 
 import com.odazie.todolistapi.business.service.CommentService;
 import com.odazie.todolistapi.business.service.TodoService;
+import com.odazie.todolistapi.business.service.TokenBlacklistService;
 import com.odazie.todolistapi.business.service.UserService;
 import com.odazie.todolistapi.data.entity.Comment;
 import com.odazie.todolistapi.data.entity.Todo;
@@ -15,23 +16,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class CommentRestController {
 
-    public final UserService userService;
-    public final TodoService todoService;
-    public final CommentService commentService;
+    private final UserService userService;
+    private final TodoService todoService;
+    private final CommentService commentService;
+    private final TokenBlacklistService blacklistService;
 
 
-    public CommentRestController(UserService userService, TodoService todoService, CommentService commentService) {
+    public CommentRestController(UserService userService, TodoService todoService, CommentService commentService, TokenBlacklistService blacklistService) {
         this.userService = userService;
         this.todoService = todoService;
         this.commentService = commentService;
+        this.blacklistService = blacklistService;
     }
 
 
     @GetMapping("/todos/{todoId}/comments")
-    public ResponseEntity<Page<Comment>> getAllTodoComments(@PathVariable Long todoId, Pageable pageable, Authentication authentication) throws ResourceNotFoundException {
+    public ResponseEntity<Page<Comment>> getAllTodoComments(@PathVariable Long todoId, Pageable pageable, Authentication authentication, HttpServletRequest request) throws ResourceNotFoundException {
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
 
@@ -43,7 +51,10 @@ public class CommentRestController {
     }
 
     @PostMapping("/todos/{todoId}/comments")
-    public ResponseEntity<Void> addComment(@RequestBody Comment comment, @PathVariable Long todoId, Authentication authentication){
+    public ResponseEntity<Void> addComment(@RequestBody Comment comment, @PathVariable Long todoId, Authentication authentication , HttpServletRequest request){
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         User currentUser = userService.findUserByEmail(authentication.getName());
 
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
@@ -54,7 +65,10 @@ public class CommentRestController {
     }
 
     @GetMapping("/todos/{todoId}/comments/{commentId}")
-    public ResponseEntity<Comment> getCommentById(@PathVariable Long todoId, @PathVariable Long commentId, Authentication authentication){
+    public ResponseEntity<Comment> getCommentById(@PathVariable Long todoId, @PathVariable Long commentId, Authentication authentication , HttpServletRequest request){
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
 
@@ -68,7 +82,10 @@ public class CommentRestController {
     }
 
     @PutMapping("/todos/{todoId}/comments/{commentId}")
-    public ResponseEntity<Comment> updateComment(@RequestBody Comment newCommentData, @PathVariable Long todoId, @PathVariable Long commentId, Authentication authentication){
+    public ResponseEntity<Comment> updateComment(@RequestBody Comment newCommentData, @PathVariable Long todoId, @PathVariable Long commentId, Authentication authentication , HttpServletRequest request){
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
 
@@ -85,7 +102,10 @@ public class CommentRestController {
 
 
     @DeleteMapping("/todos/{todoId}/comments/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long todoId, @PathVariable Long commentId, Authentication authentication){
+    public ResponseEntity<Void> deleteComment(@PathVariable Long todoId, @PathVariable Long commentId, Authentication authentication , HttpServletRequest request){
+        if(blacklistService.blacklistCheck(request) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
 
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
