@@ -1,10 +1,12 @@
 package com.odazie.todolistapi.webRestControllers;
 
 import com.odazie.todolistapi.business.service.TodoService;
+import com.odazie.todolistapi.business.service.TokenBlacklistService;
 import com.odazie.todolistapi.business.service.UserService;
 import com.odazie.todolistapi.data.entity.Todo;
 import com.odazie.todolistapi.data.entity.User;
 import com.odazie.todolistapi.exception.ResourceNotFoundException;
+import com.odazie.todolistapi.security.JWTAuthorizationFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -12,20 +14,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class TodoRestController {
 
     private final TodoService todoservice;
     private final UserService userService;
+    private TokenBlacklistService blacklistService;
 
-    public TodoRestController(TodoService todoservice, UserService userService) {
+    public TodoRestController(TodoService todoservice, UserService userService, TokenBlacklistService blacklistService) {
         this.todoservice = todoservice;
         this.userService = userService;
+        this.blacklistService = blacklistService;
     }
 
 
     @GetMapping("/todos")
-    public ResponseEntity<Page<Todo>> getAllTodosByUser(Authentication authentication, Pageable pageable){
+    public ResponseEntity<Page<Todo>> getAllTodosByUser(Authentication authentication, Pageable pageable, HttpServletRequest request){
+        if(blacklistService.getBlacklistRepository().findByToken(JWTAuthorizationFilter.getToken(request)) != null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
         User currentUser = userService.findUserByEmail(authentication.getName());
         return new ResponseEntity<Page<Todo>>(todoservice.getTodoRepository().findByUser(currentUser, pageable ), HttpStatus.OK);
     }

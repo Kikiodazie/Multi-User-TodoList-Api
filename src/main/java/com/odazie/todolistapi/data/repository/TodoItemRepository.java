@@ -15,5 +15,4 @@ public interface TodoItemRepository extends JpaRepository<TodoItem , Long> {
     TodoItem findByTodoAndItemId(Todo todo, Long itemId);
 
     boolean existsByTodoAndItemId(Todo todo, Long itemId);
-
 }
