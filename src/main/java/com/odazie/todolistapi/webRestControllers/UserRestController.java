@@ -45,11 +45,11 @@ public class UserRestController {
 
     }
 
-    @GetMapping("/logt")
-    public ResponseEntity<JwtTokenBlacklist> logoutUser(JwtTokenBlacklist tokenBlacklist, HttpServletRequest request, Authentication authentication) throws ServletException {
+    @GetMapping("/log-out")
+    public ResponseEntity<Void> logoutUser(JwtTokenBlacklist tokenBlacklist, HttpServletRequest request, Authentication authentication) throws ServletException {
         String token = JWTAuthorizationFilter.getToken(request);
         tokenBlacklistService.addTokenToBlacklist(token, tokenBlacklist);
-        return new ResponseEntity<>( tokenBlacklist, HttpStatus.FOUND);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 

@@ -9,5 +9,7 @@ public interface JwtTokenBlacklistRepository extends JpaRepository<JwtTokenBlack
 
     JwtTokenBlacklist findByToken(String token);
 
+    JwtTokenBlacklist deleteAllByExpiryAtLessThan(long time);
+
 
 }

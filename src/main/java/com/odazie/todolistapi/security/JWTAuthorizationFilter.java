@@ -6,7 +6,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -61,6 +60,9 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String authHeader = request.getHeader("Authorization");
         return authHeader.substring(7);
     }
+
+
+
 
 
 }
