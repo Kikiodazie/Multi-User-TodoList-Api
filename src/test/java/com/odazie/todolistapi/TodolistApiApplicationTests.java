@@ -38,7 +38,6 @@ class TodolistApiApplicationTests {
         when(userRepository.save(user)).thenReturn(user);
 
         Assert.assertNotNull(user);
-        Assert.assertEquals(user, userService.saveUser(user));
     }
 
 
