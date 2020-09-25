@@ -37,7 +37,7 @@ public class UserRestController {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userService.getUserRepository().save(user);
+        userService.saveUser(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/users/{userId}").buildAndExpand(user.getUserId()).toUri());
 

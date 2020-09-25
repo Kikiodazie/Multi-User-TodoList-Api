@@ -18,6 +18,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long userId;
 
 
@@ -30,6 +31,7 @@ public class User {
     @NotNull
     @Size(max = 100)
     @Column(name = "password", nullable = false)
+    @JsonIgnore
     private String password;
 
 

@@ -63,9 +63,6 @@ public class Todo extends AuditModel {
     }
 
 
-
-
-
  // One to Many Relationship between a t-odo and comments
     @OneToMany(
             mappedBy = "todo",
@@ -87,12 +84,7 @@ public class Todo extends AuditModel {
 
 
 
-
-
-
-
-
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
