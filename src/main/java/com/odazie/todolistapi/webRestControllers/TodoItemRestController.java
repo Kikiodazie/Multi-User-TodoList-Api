@@ -45,6 +45,7 @@ public class TodoItemRestController {
         if(!todoService.getTodoRepository().existsByUserAndTodoId(currentUser,todoId)){
             throw new ResourceNotFoundException("Todo with + " + todoId + "not found");
         }
+
         return new ResponseEntity<>(todoItemService
                 .getAllTodoItems(todo, pageable), HttpStatus.OK);
     }

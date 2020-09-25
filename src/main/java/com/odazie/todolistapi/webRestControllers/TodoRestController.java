@@ -46,6 +46,7 @@ public class TodoRestController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
+
         User currentUser = userService.findUserByEmail(authentication.getName());
         todoservice.addTodo(todo, currentUser);
         return new ResponseEntity<Void>(HttpStatus.CREATED);

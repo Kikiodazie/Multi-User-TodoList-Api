@@ -88,7 +88,6 @@ public class CommentRestController {
         }
         User currentUser = userService.findUserByEmail(authentication.getName());
         Todo todo = todoService.getTodoByUserAndId(currentUser, todoId);
-
         Comment comment = commentService.getComment(todo,commentId);
         if(!commentService.getCommentRepository().existsByTodoAndCommentId(todo, commentId)){
             return new ResponseEntity<>(comment, HttpStatus.NOT_FOUND);
