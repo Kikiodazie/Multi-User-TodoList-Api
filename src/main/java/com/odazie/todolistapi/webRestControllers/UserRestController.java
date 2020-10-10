@@ -6,6 +6,8 @@ import com.odazie.todolistapi.business.service.UserService;
 import com.odazie.todolistapi.data.entity.JwtTokenBlacklist;
 import com.odazie.todolistapi.data.entity.User;
 import com.odazie.todolistapi.security.JWTAuthorizationFilter;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +48,7 @@ public class UserRestController {
 
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="Bearer") })
     @GetMapping("/log-out")
     public ResponseEntity<Void> logoutUser(JwtTokenBlacklist tokenBlacklist, HttpServletRequest request, Authentication authentication) throws ServletException {
         String token = JWTAuthorizationFilter.getToken(request);

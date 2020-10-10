@@ -31,7 +31,6 @@ public class User {
     @NotNull
     @Size(max = 100)
     @Column(name = "password", nullable = false)
-    @JsonIgnore
     private String password;
 
 

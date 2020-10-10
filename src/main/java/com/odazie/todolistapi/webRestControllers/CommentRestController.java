@@ -9,6 +9,8 @@ import com.odazie.todolistapi.data.entity.Comment;
 import com.odazie.todolistapi.data.entity.Todo;
 import com.odazie.todolistapi.data.entity.User;
 import com.odazie.todolistapi.exception.ResourceNotFoundException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,7 @@ public class CommentRestController {
     }
 
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="Bearer") })
     @GetMapping("/todos/{todoId}/comments")
     public ResponseEntity<Page<Comment>> getAllTodoComments(@PathVariable Long todoId, Pageable pageable, Authentication authentication, HttpServletRequest request) throws ResourceNotFoundException {
         if(blacklistService.blacklistCheck(request) != null){
@@ -50,6 +53,7 @@ public class CommentRestController {
                 .getAllTodoComments(todo,pageable), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="Bearer") })
     @PostMapping("/todos/{todoId}/comments")
     public ResponseEntity<Void> addComment(@RequestBody Comment comment, @PathVariable Long todoId, Authentication authentication , HttpServletRequest request){
         if(blacklistService.blacklistCheck(request) != null){
@@ -64,6 +68,7 @@ public class CommentRestController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="Bearer") })
     @GetMapping("/todos/{todoId}/comments/{commentId}")
     public ResponseEntity<Comment> getCommentById(@PathVariable Long todoId, @PathVariable Long commentId, Authentication authentication , HttpServletRequest request){
         if(blacklistService.blacklistCheck(request) != null){
@@ -81,6 +86,7 @@ public class CommentRestController {
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="Bearer") })
     @PutMapping("/todos/{todoId}/comments/{commentId}")
     public ResponseEntity<Comment> updateComment(@RequestBody Comment newCommentData, @PathVariable Long todoId, @PathVariable Long commentId, Authentication authentication , HttpServletRequest request){
         if(blacklistService.blacklistCheck(request) != null){
@@ -100,6 +106,7 @@ public class CommentRestController {
     }
 
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="Bearer") })
     @DeleteMapping("/todos/{todoId}/comments/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long todoId, @PathVariable Long commentId, Authentication authentication , HttpServletRequest request){
         if(blacklistService.blacklistCheck(request) != null){

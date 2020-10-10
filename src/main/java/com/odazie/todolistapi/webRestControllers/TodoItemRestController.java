@@ -8,6 +8,8 @@ import com.odazie.todolistapi.data.entity.Todo;
 import com.odazie.todolistapi.data.entity.TodoItem;
 import com.odazie.todolistapi.data.entity.User;
 import com.odazie.todolistapi.exception.ResourceNotFoundException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -34,6 +36,7 @@ public class TodoItemRestController {
         this.blacklistService = blacklistService;
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="Bearer") })
     @GetMapping("todos/{todoId}/items")
     public ResponseEntity<Page<TodoItem>> getAllTodoItems(@PathVariable Long todoId, Pageable pageable, Authentication authentication, HttpServletRequest request) throws ResourceNotFoundException {
         if(blacklistService.blacklistCheck(request) != null){
@@ -51,6 +54,7 @@ public class TodoItemRestController {
     }
 
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="Bearer") })
     @PostMapping("todos/{todoId}/items")
     public ResponseEntity<Void> createTodoItem(@RequestBody TodoItem todoItem, Authentication authentication, @PathVariable Long todoId, HttpServletRequest request){
         if(blacklistService.blacklistCheck(request) != null){
@@ -64,6 +68,7 @@ public class TodoItemRestController {
     }
 
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="Bearer") })
     @GetMapping("todos/{todoId}/items/{itemId}")
     public ResponseEntity<TodoItem> getTodoItemById(@PathVariable Long todoId, @PathVariable Long itemId, Authentication authentication, HttpServletRequest request){
         if(blacklistService.blacklistCheck(request) != null){
@@ -80,6 +85,7 @@ public class TodoItemRestController {
     }
 
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="Bearer") })
     @PutMapping("todos/{todoId}/items/{itemId}")
     public ResponseEntity<TodoItem> updateTodoItem(@RequestBody TodoItem newTodoId, @PathVariable Long todoId, @PathVariable Long itemId, Authentication authentication, HttpServletRequest request){
         if(blacklistService.blacklistCheck(request) != null){
@@ -99,6 +105,7 @@ public class TodoItemRestController {
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="Bearer") })
     @DeleteMapping("todos/{todoId}/items/{itemId}")
     public ResponseEntity<Void> deleteTodoItem(@PathVariable Long todoId, @PathVariable Long itemId, Authentication authentication, HttpServletRequest request){
         if(blacklistService.blacklistCheck(request) != null){
