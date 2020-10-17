@@ -23,7 +23,7 @@ public class TodoRestController {
 
     private final TodoService todoservice;
     private final UserService userService;
-    private TokenBlacklistService blacklistService;
+    private final TokenBlacklistService blacklistService;
 
     public TodoRestController(TodoService todoservice, UserService userService, TokenBlacklistService blacklistService) {
         this.todoservice = todoservice;

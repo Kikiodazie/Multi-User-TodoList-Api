@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 public class UserRestController {
 
     private final UserService userService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private TokenBlacklistService tokenBlacklistService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final TokenBlacklistService tokenBlacklistService;
 
 
     public UserRestController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder, TokenBlacklistService tokenBlacklistService) {
