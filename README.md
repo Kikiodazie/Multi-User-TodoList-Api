@@ -2,16 +2,16 @@
 A todolist api with user authentication and authorization using Json Web Token(JWT) written with springboot
 
 
-#Getting Started
+# Getting Started
 
-##Prerequisites
+## Prerequisites
 * Git
 * IntelliJ IDEA (or similar)
 * Datagrip (or similar)
 * Docker
 * Postman
 
-###About
+### About
 
 This is a mini project practicing on building secured API's with Spring Boot and JWT. The idea was to 
 build a Todo-List API that performs CRUD operations, and can be consumed by a frontend/mobile app.
