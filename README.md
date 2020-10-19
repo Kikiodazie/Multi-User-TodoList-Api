@@ -14,13 +14,14 @@ A todolist api with user authentication and authorization using Json Web Token(J
 ### About
 
 This is a mini project practicing on building secured API's with Spring Boot and JWT. The idea was to 
-build a Todo-List API that performs CRUD operations, and can be consumed by a frontend/mobile app.
+build a User Todo-List API that performs CRUD operations, and can be consumed by a frontend/mobile app.
+
+Endpoints except, **/signup**, **/login** can only be accessed with a JWT token(Sent via httpHeader) which is generated when the user **/login** and invalidated when **/log-out**. 
 
 It was made using **Spring Boot**, **Spring Web**, **Spring Security**, **Spring Data JPA** and **Docker**. 
 A postgres Database linked to the app image with docker-compose and deployed on docker-hub.
 
-An API Documentation, created/updated using **Swagger**. Visit   ``http://localhost:8080/swagger-ui.html`` when running locally to view API docs.
-
+An API Documentation, created/updated using **Swagger**.
 
 
 |Endpoint  |   |  Functionality  |   |   |
@@ -43,6 +44,33 @@ An API Documentation, created/updated using **Swagger**. Visit   ``http://localh
 |**DELETE**/todos/{todoId}/comments/{commentId}   |   | Delete comment  |   |   |
 
 
+
+
+# How To Run
+
+### Locally
+Clone the app repo & pull the **Docker** database image from **DockerHub**
+
+* After cloning 
+
+**Configuration**
+Folder src/resources/ contains config files for todolist-API.
+
+src/resources/application.properties - main configuration file.
+
+Confirm the datasource url is : ``spring.datasource.url=jdbc:postgresql://localhost:5432/postgres`` to access locally.
+
+* Pull the database image from DockerHub
+``docker pull kikiodazie/todolist-api-postgres-image``
+
+* Run the database ``docker run -d --name todoListApi-image -p 5432:5432 kikiodazie/todolist-api-postgres-image``
+
+* Run the app on your IDE.
+
+* Visit   ``http://localhost:8080/swagger-ui.html`` to view API docs or use **Postman** to test endpoints. 
+
+
+ 
 
 
 
