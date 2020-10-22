@@ -1,0 +1,14 @@
+application:
+  name: todolist-api
+  project: todolist-api-project
+  publicly_accessible: true
+databases:
+  - type: postgresql
+    version: "11.5"
+    name: todolistapi-db
+routers:
+  - name: main
+    routes:
+      - application_name: todolist-api
+        paths:
+          - /
