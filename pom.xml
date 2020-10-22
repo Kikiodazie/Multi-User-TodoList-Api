@@ -14,9 +14,6 @@
     <name>todolistAPI</name>
     <description>A basic TodoList API</description>
 
-    <properties>
-        <java.version>11</java.version>
-    </properties>
 
 
     <dependencies>

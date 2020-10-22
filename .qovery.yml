@@ -1,13 +1,14 @@
 application:
   name: todolist-api-v1
   project: todolist-api-v1-project
+  cloud_region: aws/eu-west-3
   publicly_accessible: true
 databases:
   - type: postgresql
-    version: "11.5"
+    version: "11"
     name: todolistapi-db
 routers:
-  - name: main
+  - name: todolist
     routes:
       - application_name: todolist-api-v1
         paths:
