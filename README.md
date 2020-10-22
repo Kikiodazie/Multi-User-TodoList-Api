@@ -48,6 +48,28 @@ An API Documentation, created/updated using **Swagger**.
 
 # How To Run
 
+**Step 1**
+* Visit http://springtodolistapi.herokuapp.com/swagger-ui.html to view API Docs and Test Endpoints.
+
+**Step 2**
+* To obtain an authorization code, Open **POSTMAN** 
+``http://springtodolistapi.herokuapp.com/login``
+
+````
+{
+    "email": "test@gmail.com",
+    "password": "test"
+}
+````
+
+Copy the "Bearer token"  code from response header and paste as api key in authorize button.
+
+            You can now access all the endpoints as test@gmail.com user.
+ 
+To signup new user, provide the required data as stated on the docs in json from and go back to **STEP 2**.
+ 
+
+
 ### Locally
 Clone the app repo & pull the **Docker** database image from **DockerHub**
 
