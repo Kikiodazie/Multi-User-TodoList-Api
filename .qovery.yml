@@ -1,6 +1,6 @@
 application:
-  name: todolist-api
-  project: todolist-api-project
+  name: todolist-api-v1
+  project: todolist-api-v1-project
   publicly_accessible: true
 databases:
   - type: postgresql
@@ -9,6 +9,6 @@ databases:
 routers:
   - name: main
     routes:
-      - application_name: todolist-api
+      - application_name: todolist-api-v1
         paths:
           - /
