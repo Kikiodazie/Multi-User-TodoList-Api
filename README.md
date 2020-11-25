@@ -23,6 +23,8 @@ A postgres Database linked to the app image with docker-compose and deployed on 
 
 An API Documentation, created/updated using **Swagger**.
 
+View The Database Entity Relationship Diagram [TodoList ERD](https://lucid.app/lucidchart/invitations/accept/988fb2fa-a21d-40e9-a136-0b1c4cff4552)
+
 
 |Endpoint  |   |  Functionality  |   |   |
 |---|---|---|---|---|
